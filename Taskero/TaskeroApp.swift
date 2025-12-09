@@ -9,9 +9,22 @@ import SwiftUI
 
 @main
 struct TaskeroApp: App {
+    @State private var isLoading = true
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if isLoading {
+                LoadingView()
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                            withAnimation {
+                                isLoading = false
+                            }
+                        }
+                    }
+            } else {
+                ContentView()
+            }
         }
     }
 }
