@@ -9,9 +9,27 @@ import SwiftUI
 
 @main
 struct TaskeroApp: App {
+    @State private var isLoading = true
+    @AppStorage("isOnboardingCompleted") var isOnboardingCompleted: Bool = false
+    
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if isLoading {
+                LoadingView()
+                    .onAppear {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                            withAnimation {
+                                isLoading = false
+                            }
+                        }
+                    }
+            } else {
+                if isOnboardingCompleted {
+                    ContentView()
+                } else {
+                    OnboardingView()
+                }
+            }
         }
     }
 }
