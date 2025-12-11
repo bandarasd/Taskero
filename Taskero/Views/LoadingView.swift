@@ -13,7 +13,7 @@ struct LoadingView: View {
             Color(red: 0.0, green: 0.8, blue: 0.4)
                 .ignoresSafeArea()
             
-            Image("AppLogo")
+            Image("AppLogoWhite")
                 .resizable()
                 .scaledToFit()
                 .frame(width: 180, height: 180)
