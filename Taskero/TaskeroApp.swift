@@ -10,6 +10,7 @@ import SwiftUI
 @main
 struct TaskeroApp: App {
     @State private var isLoading = true
+    @AppStorage("isOnboardingCompleted") var isOnboardingCompleted: Bool = false
     
     var body: some Scene {
         WindowGroup {
@@ -23,7 +24,11 @@ struct TaskeroApp: App {
                         }
                     }
             } else {
-                ContentView()
+                if isOnboardingCompleted {
+                    ContentView()
+                } else {
+                    OnboardingView()
+                }
             }
         }
     }
