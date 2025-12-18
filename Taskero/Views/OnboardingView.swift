@@ -10,6 +10,7 @@ import SwiftUI
 struct OnboardingView: View {
     @AppStorage("isOnboardingCompleted") var isOnboardingCompleted: Bool = false
     @State private var currentPage = 0
+    @State private var showAuthView = false
     
     let pages = [
         OnboardingPage(image: "Onboarding1", title: "Your Home Services, Simplified", description: "Effortlessly book trusted professionals for all your needs."),
@@ -93,7 +94,7 @@ struct OnboardingView: View {
                             if currentPage == pages.count - 1 {
                                 // Last Page: Full Width Button
                                 Button(action: {
-                                    completeOnboarding()
+                                    showAuthView = true
                                 }) {
                                     Text("Let's Get Started")
                                         .font(.headline)
@@ -109,7 +110,7 @@ struct OnboardingView: View {
                                 // Other Pages: Skip and Next Arrow
                                 HStack {
                                     Button("Skip") {
-                                        completeOnboarding()
+                                        showAuthView = true
                                     }
                                     .foregroundColor(.gray)
                                     .font(.system(size: 16, weight: .medium))
@@ -139,6 +140,9 @@ struct OnboardingView: View {
                 .frame(height: 320) // Fixed height for bottom card to ensure consistent "cover" amount
             }
             .ignoresSafeArea(.keyboard) 
+        }
+        .fullScreenCover(isPresented: $showAuthView) {
+            AuthView()
         }
     }
     
