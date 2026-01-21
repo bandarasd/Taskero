@@ -1,0 +1,213 @@
+//
+//  ReviewSummaryView.swift
+//  Taskero
+//
+//  Created by Intravision on 2026-01-15.
+//
+
+import SwiftUI
+
+struct ReviewSummaryView: View {
+    let service: ServiceItem
+    let totalPrice: Int
+    let selectedDate: Date
+    let selectedTime: String
+    let paymentMethod: String
+    
+    @Environment(\.presentationMode) var presentationMode
+    @State private var showSuccessModal = false
+    
+    // Mock Data
+    private let promoDiscount = 37.50
+    private var totalAmount: Double {
+        Double(totalPrice) - promoDiscount
+    }
+    
+    var body: some View {
+        ZStack {
+            VStack(spacing: 0) {
+                // Header
+                HStack {
+                    Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }) {
+                        Image(systemName: "arrow.left")
+                            .font(.title2)
+                            .foregroundColor(.black)
+                    }
+                    Spacer()
+                    Text("Review Summary")
+                        .font(.headline)
+                        .foregroundColor(.black)
+                    Spacer()
+                    Color.clear.frame(width: 24, height: 24)
+                }
+                .padding()
+                .padding(.top, 40)
+                
+                ScrollView {
+                    VStack(spacing: 24) {
+                        
+                        // Service Details Card
+                        VStack(spacing: 16) {
+                            DetailRow(label: "Services", value: service.title)
+                            DetailRow(label: "Category", value: "Cleaning") // Mock category
+                            DetailRow(label: "Workers", value: "Jenny Wilson") // Mock worker
+                            DetailRow(label: "Date & Time", value: "\(formatDate(selectedDate)) | \(selectedTime)")
+                            DetailRow(label: "Working Hours", value: "2 hours") // Mock hours
+                        }
+                        .padding()
+                        .background(Color.white)
+                        .cornerRadius(16)
+                        .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
+                        .padding(.horizontal)
+                        
+                        // Accordion placeholder (House Cleaning Details)
+                        HStack {
+                            Text("\(service.title) Details")
+                                .font(.subheadline)
+                                .foregroundColor(.gray)
+                            Spacer()
+                            Image(systemName: "chevron.down")
+                                .foregroundColor(.gray)
+                        }
+                        .padding()
+                        .background(Color.white)
+                        .cornerRadius(12)
+                        .shadow(color: .black.opacity(0.05), radius: 5)
+                        .padding(.horizontal)
+                        
+                        // Pricing Details
+                        VStack(spacing: 16) {
+                            HStack {
+                                Text(service.title)
+                                    .foregroundColor(.gray)
+                                Spacer()
+                                Text("$\(String(format: "%.2f", Double(totalPrice)))")
+                                    .fontWeight(.bold)
+                            }
+                            
+                            HStack {
+                                Text("Promo")
+                                    .foregroundColor(.brandGreen)
+                                Spacer()
+                                Text("- $\(String(format: "%.2f", promoDiscount))")
+                                    .fontWeight(.bold)
+                                    .foregroundColor(.brandGreen)
+                            }
+                            
+                            Divider()
+                            
+                            HStack {
+                                Text("Total")
+                                    .font(.headline)
+                                Spacer()
+                                Text("$\(String(format: "%.2f", totalAmount))")
+                                    .font(.headline)
+                                    .fontWeight(.bold)
+                            }
+                        }
+                        .padding()
+                        .background(Color.white)
+                        .cornerRadius(16)
+                        .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
+                        .padding(.horizontal)
+                        
+                        // Payment Method
+                        HStack {
+                            Image(systemName: "creditcard.fill") // Use mapping based on paymentMethod string in real app
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 30, height: 30)
+                                .foregroundColor(paymentMethod == "MasterCard" ? .red : .orange)
+                            
+                            Text(".... .... .... 4679") // Mock last 4 digits
+                                .fontWeight(.bold)
+                            
+                            Spacer()
+                            
+                            Button("Change") {
+                                presentationMode.wrappedValue.dismiss()
+                            }
+                            .foregroundColor(.brandGreen)
+                            .font(.subheadline)
+                            .fontWeight(.bold)
+                        }
+                        .padding()
+                        .background(Color.white)
+                        .cornerRadius(16)
+                        .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
+                        .padding(.horizontal)
+                        
+                    }
+                    .padding(.vertical)
+                }
+                
+                // Confirm Payment Button
+                VStack {
+                    Button(action: {
+                        showSuccessModal = true
+                    }) {
+                        Text("Confirm Payment")
+                            .font(.headline)
+                            .fontWeight(.bold)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color.brandGreen)
+                            .cornerRadius(24)
+                    }
+                }
+                .padding()
+                .background(Color.white)
+                .shadow(color: .black.opacity(0.05), radius: 10, x: 0, y: -5)
+            }
+            .edgesIgnoringSafeArea(.top)
+            .navigationBarHidden(true)
+            .opacity(showSuccessModal ? 0.3 : 1) // Dim background when modal is up
+            
+            // Payment Success Modal Overlay
+            if showSuccessModal {
+                Color.black.opacity(0.4)
+                    .edgesIgnoringSafeArea(.all)
+                    .onTapGesture {
+                        // Optional: dismiss on tap outside
+                    }
+                
+                PaymentSuccessView(onDismiss: {
+                   // Navigate to home or Reset flow.
+                   // For now, let's just dismiss the modal or pop to root.
+                   // Ideally we need a way to pop to root.
+                   // We will implement a basic dismiss for now.
+                   showSuccessModal = false
+                   // In a real app we would navigate to Home view here
+                })
+                .transition(.scale.combined(with: .opacity))
+                .zIndex(1)
+            }
+        }
+    }
+    
+    private func formatDate(_ date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d, yyyy"
+        return formatter.string(from: date)
+    }
+}
+
+struct DetailRow: View {
+    let label: String
+    let value: String
+    
+    var body: some View {
+        HStack {
+            Text(label)
+                .foregroundColor(.gray)
+                .font(.subheadline)
+            Spacer()
+            Text(value)
+                .fontWeight(.bold)
+                .font(.subheadline)
+        }
+    }
+}

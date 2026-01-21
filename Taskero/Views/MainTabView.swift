@@ -22,9 +22,9 @@ struct MainTabView: View {
                     Label("Categories", systemImage: "square.grid.2x2")
                 }
             
-            Text("Bookings")
+            BookingsView()
                 .tabItem {
-                    Label("Bookings", systemImage: "clipboard") // SF Symbol varies, using generic
+                    Label("Bookings", systemImage: "doc.text.fill")
                 }
             
             Text("Message")

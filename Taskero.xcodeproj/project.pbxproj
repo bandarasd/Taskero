@@ -6,6 +6,15 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		35F2D6192F1917030093795D /* MapboxCoreMaps.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35F2D6142F1917030093795D /* MapboxCoreMaps.xcframework */; };
+		35F2D61A2F1917030093795D /* MapboxCommon.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35F2D6132F1917030093795D /* MapboxCommon.xcframework */; };
+		35F2D61B2F1917030093795D /* Turf.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35F2D6172F1917030093795D /* Turf.xcframework */; };
+		35F2D61C2F1917030093795D /* MapboxMaps.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35F2D6152F1917030093795D /* MapboxMaps.xcframework */; };
+		35F2D61D2F1917030093795D /* LICENSE.md in Resources */ = {isa = PBXBuildFile; fileRef = 35F2D6122F1917030093795D /* LICENSE.md */; };
+		35F2D61E2F1917030093795D /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 35F2D6162F1917030093795D /* README.md */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		351316732EE87820002CFAA0 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,11 +36,30 @@
 		351316652EE8781C002CFAA0 /* Taskero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Taskero.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		351316722EE87820002CFAA0 /* TaskeroTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskeroTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		3513167C2EE87820002CFAA0 /* TaskeroUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TaskeroUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		35F2D6122F1917030093795D /* LICENSE.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
+		35F2D6132F1917030093795D /* MapboxCommon.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:GJZR2MEM28:Mapbox, Inc."; lastKnownFileType = wrapper.xcframework; path = MapboxCommon.xcframework; sourceTree = "<group>"; };
+		35F2D6142F1917030093795D /* MapboxCoreMaps.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:GJZR2MEM28:Mapbox, Inc."; lastKnownFileType = wrapper.xcframework; path = MapboxCoreMaps.xcframework; sourceTree = "<group>"; };
+		35F2D6152F1917030093795D /* MapboxMaps.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:GJZR2MEM28:Mapbox, Inc."; lastKnownFileType = wrapper.xcframework; path = MapboxMaps.xcframework; sourceTree = "<group>"; };
+		35F2D6162F1917030093795D /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		35F2D6172F1917030093795D /* Turf.xcframework */ = {isa = PBXFileReference; expectedSignature = "AppleDeveloperProgram:GJZR2MEM28:Mapbox, Inc."; lastKnownFileType = wrapper.xcframework; path = Turf.xcframework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		35D1979C2F190D7500A47168 /* Exceptions for "Taskero" folder in "Taskero" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 351316642EE8781C002CFAA0 /* Taskero */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		351316672EE8781C002CFAA0 /* Taskero */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				35D1979C2F190D7500A47168 /* Exceptions for "Taskero" folder in "Taskero" target */,
+			);
 			path = Taskero;
 			sourceTree = "<group>";
 		};
@@ -52,6 +80,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35F2D6192F1917030093795D /* MapboxCoreMaps.xcframework in Frameworks */,
+				35F2D61A2F1917030093795D /* MapboxCommon.xcframework in Frameworks */,
+				35F2D61B2F1917030093795D /* Turf.xcframework in Frameworks */,
+				35F2D61C2F1917030093795D /* MapboxMaps.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,6 +107,7 @@
 		3513165C2EE8781C002CFAA0 = {
 			isa = PBXGroup;
 			children = (
+				35F2D6182F1917030093795D /* artifacts */,
 				351316672EE8781C002CFAA0 /* Taskero */,
 				351316752EE87820002CFAA0 /* TaskeroTests */,
 				3513167F2EE87820002CFAA0 /* TaskeroUITests */,
@@ -90,6 +123,19 @@
 				3513167C2EE87820002CFAA0 /* TaskeroUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		35F2D6182F1917030093795D /* artifacts */ = {
+			isa = PBXGroup;
+			children = (
+				35F2D6122F1917030093795D /* LICENSE.md */,
+				35F2D6132F1917030093795D /* MapboxCommon.xcframework */,
+				35F2D6142F1917030093795D /* MapboxCoreMaps.xcframework */,
+				35F2D6152F1917030093795D /* MapboxMaps.xcframework */,
+				35F2D6162F1917030093795D /* README.md */,
+				35F2D6172F1917030093795D /* Turf.xcframework */,
+			);
+			path = artifacts;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -195,6 +241,8 @@
 			);
 			mainGroup = 3513165C2EE8781C002CFAA0;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 351316662EE8781C002CFAA0 /* Products */;
 			projectDirPath = "";
@@ -212,6 +260,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				35F2D61D2F1917030093795D /* LICENSE.md in Resources */,
+				35F2D61E2F1917030093795D /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -400,6 +450,7 @@
 				DEVELOPMENT_TEAM = 2AD53RJ5J6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Taskero/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -428,6 +479,7 @@
 				DEVELOPMENT_TEAM = 2AD53RJ5J6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Taskero/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

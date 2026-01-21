@@ -106,27 +106,27 @@ struct HomeView: View {
                     
                     // Sections
                     ServiceSectionView(title: "Best Services", services: [
-                        ServiceItem(title: "Complete Kitchen Cleaning", price: "$150", originalPrice: "$180", rating: "(130 Reviews)", provider: "Mark Willions", imageColor: .orange, imageName: "cleaning_service"),
-                        ServiceItem(title: "Living Room Cleaning", price: "$200", originalPrice: "$230", rating: "(240 Reviews)", provider: "Ronald Mark", imageColor: .blue, imageName: "living_room_service"),
-                        ServiceItem(title: "AC Service & Repair", price: "$50", originalPrice: "$120", rating: "(100 Reviews)", provider: "James", imageColor: .cyan, imageName: "ac_repair_service")
+                        ServiceItem(title: "Complete Kitchen Cleaning", price: "$150", originalPrice: "$180", rating: "(130 Reviews)", provider: "Mark Willions", imageColor: .orange, imageName: "cleaning_service", type: .cleaning),
+                        ServiceItem(title: "Living Room Cleaning", price: "$200", originalPrice: "$230", rating: "(240 Reviews)", provider: "Ronald Mark", imageColor: .blue, imageName: "living_room_service", type: .cleaning),
+                        ServiceItem(title: "AC Service & Repair", price: "$50", originalPrice: "$120", rating: "(100 Reviews)", provider: "James", imageColor: .cyan, imageName: "ac_repair_service", type: .repairing)
                     ], mainColor: mainColor)
                     
                     ServiceSectionView(title: "Kitchen Cleaning", services: [
-                         ServiceItem(title: "Deep Kitchen Clean", price: "$120", originalPrice: "$150", rating: "(80 Reviews)", provider: "Sarah Jones", imageColor: .orange, imageName: "cleaning_service"),
-                         ServiceItem(title: "Sink Repair & Clean", price: "$90", originalPrice: "$110", rating: "(45 Reviews)", provider: "Mike Ross", imageColor: .purple, imageName: "plumbing_service"),
-                         ServiceItem(title: "Cabinet Degreasing", price: "$200", originalPrice: "$250", rating: "(20 Reviews)", provider: "CleanCo", imageColor: .green, imageName: "cleaning_service")
+                         ServiceItem(title: "Deep Kitchen Clean", price: "$120", originalPrice: "$150", rating: "(80 Reviews)", provider: "Sarah Jones", imageColor: .orange, imageName: "cleaning_service", type: .cleaning),
+                         ServiceItem(title: "Sink Repair & Clean", price: "$90", originalPrice: "$110", rating: "(45 Reviews)", provider: "Mike Ross", imageColor: .purple, imageName: "plumbing_service", type: .plumbing),
+                         ServiceItem(title: "Cabinet Degreasing", price: "$200", originalPrice: "$250", rating: "(20 Reviews)", provider: "CleanCo", imageColor: .green, imageName: "cleaning_service", type: .cleaning)
                     ], mainColor: mainColor)
                     
                     ServiceSectionView(title: "Plumbing Services", services: [
-                         ServiceItem(title: "Pipe Leak Fix", price: "$60", originalPrice: "$90", rating: "(200 Reviews)", provider: "Mario Bros", imageColor: .red, imageName: "plumbing_service"),
-                         ServiceItem(title: "Water Heater Install", price: "$300", originalPrice: "$350", rating: "(15 Reviews)", provider: "HotWater Inc", imageColor: .orange, imageName: "plumbing_service"),
-                         ServiceItem(title: "Drain Unclogging", price: "$80", originalPrice: "$100", rating: "(330 Reviews)", provider: "FastPlumb", imageColor: .blue, imageName: "plumbing_service")
+                         ServiceItem(title: "Pipe Leak Fix", price: "$60", originalPrice: "$90", rating: "(200 Reviews)", provider: "Mario Bros", imageColor: .red, imageName: "plumbing_service", type: .plumbing),
+                         ServiceItem(title: "Water Heater Install", price: "$300", originalPrice: "$350", rating: "(15 Reviews)", provider: "HotWater Inc", imageColor: .orange, imageName: "plumbing_service", type: .plumbing),
+                         ServiceItem(title: "Drain Unclogging", price: "$80", originalPrice: "$100", rating: "(330 Reviews)", provider: "FastPlumb", imageColor: .blue, imageName: "plumbing_service", type: .plumbing)
                     ], mainColor: mainColor)
                     
                     ServiceSectionView(title: "Home Maintenance", services: [
-                         ServiceItem(title: "Wall Painting", price: "$500", originalPrice: "$600", rating: "(50 Reviews)", provider: "ColorWorld", imageColor: .green, imageName: "painting_service"),
-                         ServiceItem(title: "Furniture Assembly", price: "$100", originalPrice: "$120", rating: "(90 Reviews)", provider: "FixItAll", imageColor: .yellow, imageName: nil), // Fallback due to quota
-                         ServiceItem(title: "Electric Wiring", price: "$150", originalPrice: "$180", rating: "(110 Reviews)", provider: "Sparky", imageColor: .orange, imageName: "electrician_service")
+                         ServiceItem(title: "Wall Painting", price: "$500", originalPrice: "$600", rating: "(50 Reviews)", provider: "ColorWorld", imageColor: .green, imageName: "painting_service", type: .painting),
+                         ServiceItem(title: "Furniture Assembly", price: "$100", originalPrice: "$120", rating: "(90 Reviews)", provider: "FixItAll", imageColor: .yellow, imageName: nil, type: .assembly), // Fallback due to quota
+                         ServiceItem(title: "Electric Wiring", price: "$150", originalPrice: "$180", rating: "(110 Reviews)", provider: "Sparky", imageColor: .orange, imageName: "electrician_service", type: .electrician)
                     ], mainColor: mainColor)
                     
                     Spacer().frame(height: 100) // Increase spacing to clear tab bar
@@ -141,16 +141,7 @@ struct HomeView: View {
 }
 
 // Data Model for Services
-struct ServiceItem: Identifiable {
-    let id = UUID()
-    let title: String
-    let price: String
-    let originalPrice: String
-    let rating: String
-    let provider: String
-    let imageColor: Color
-    let imageName: String?
-}
+
 
 // Reusable Section View
 struct ServiceSectionView: View {
@@ -173,7 +164,10 @@ struct ServiceSectionView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 15) {
                     ForEach(services) { service in
-                        ServiceCard(service: service, mainColor: mainColor)
+                        NavigationLink(destination: ServiceDetailView(service: service)) {
+                            ServiceCard(service: service, mainColor: mainColor)
+                        }
+                        .buttonStyle(PlainButtonStyle()) // Needed to prevent whole cell highlighting/blue overlay in some iOS versions
                     }
                 }
                 .padding(.horizontal)
