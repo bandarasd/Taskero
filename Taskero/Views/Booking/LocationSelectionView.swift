@@ -10,6 +10,7 @@ struct LocationSelectionView: View {
     let totalPrice: Int
     let selectedDate: Date
     let selectedTime: String
+    let serviceDetails: ServiceDetails
     
     @Environment(\.presentationMode) var presentationMode
     
@@ -23,6 +24,7 @@ struct LocationSelectionView: View {
     // To track current center
     @State private var mapCenter: CLLocationCoordinate2D?
     @FocusState private var isSearchFocused: Bool
+    @State private var selectedLocationAddress: String = "Louisiana, United States"
     
     var body: some View {
         ZStack {
@@ -121,6 +123,7 @@ struct LocationSelectionView: View {
                             List(searchService.results) { result in
                                 Button(action: {
                                     searchService.selectResult(result)
+                                    selectedLocationAddress = result.place_name
                                     isSearchFocused = false
                                     withAnimation {
                                         viewport = .camera(center: result.coordinate, zoom: 16, bearing: 0, pitch: 0)
@@ -146,7 +149,9 @@ struct LocationSelectionView: View {
                             service: service,
                             totalPrice: totalPrice,
                             selectedDate: selectedDate,
-                            selectedTime: selectedTime
+                            selectedTime: selectedTime,
+                            selectedLocation: selectedLocationAddress,
+                            serviceDetails: serviceDetails
                         )) {
                             Text("Confirm Location")
                                 .font(.headline)
@@ -160,11 +165,11 @@ struct LocationSelectionView: View {
                     }
                 }
                 .padding()
+                .padding(.bottom, 30)
                 .background(Color.white)
                 .cornerRadius(24, corners: [.topLeft, .topRight])
                 .shadow(radius: 10)
             }
-            .edgesIgnoringSafeArea(.bottom)
         }
         .navigationBarHidden(true)
     }

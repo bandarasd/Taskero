@@ -13,9 +13,12 @@ struct ReviewSummaryView: View {
     let selectedDate: Date
     let selectedTime: String
     let paymentMethod: String
+    let selectedLocation: String
+    let serviceDetails: ServiceDetails
     
     @Environment(\.presentationMode) var presentationMode
     @State private var showSuccessModal = false
+    @State private var isServiceDetailsExpanded = false
     
     // Mock Data
     private let promoDiscount = 37.50
@@ -48,13 +51,14 @@ struct ReviewSummaryView: View {
                 ScrollView {
                     VStack(spacing: 24) {
                         
-                        // Service Details Card
+                        // Booking Details Card (Top Section)
                         VStack(spacing: 16) {
-                            DetailRow(label: "Services", value: service.title)
-                            DetailRow(label: "Category", value: "Cleaning") // Mock category
+                            DetailRow(label: "Service", value: service.title)
+                            DetailRow(label: "Category", value: service.type.rawValue)
                             DetailRow(label: "Workers", value: "Jenny Wilson") // Mock worker
                             DetailRow(label: "Date & Time", value: "\(formatDate(selectedDate)) | \(selectedTime)")
                             DetailRow(label: "Working Hours", value: "2 hours") // Mock hours
+                            DetailRow(label: "Location", value: selectedLocation)
                         }
                         .padding()
                         .background(Color.white)
@@ -62,16 +66,41 @@ struct ReviewSummaryView: View {
                         .shadow(color: .black.opacity(0.05), radius: 8, x: 0, y: 4)
                         .padding(.horizontal)
                         
-                        // Accordion placeholder (House Cleaning Details)
-                        HStack {
-                            Text("\(service.title) Details")
-                                .font(.subheadline)
-                                .foregroundColor(.gray)
-                            Spacer()
-                            Image(systemName: "chevron.down")
-                                .foregroundColor(.gray)
+                        // Service Details Accordion (Service-Specific Info Only)
+                        VStack(spacing: 0) {
+                            // Header
+                            Button(action: {
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                    isServiceDetailsExpanded.toggle()
+                                }
+                            }) {
+                                HStack {
+                                    Text("\(service.title) Details")
+                                        .font(.subheadline)
+                                        .foregroundColor(.gray)
+                                    Spacer()
+                                    Image(systemName: "chevron.down")
+                                        .foregroundColor(.gray)
+                                        .rotationEffect(.degrees(isServiceDetailsExpanded ? 180 : 0))
+                                }
+                                .padding()
+                            }
+                            
+                            // Expandable Content - User Selected Service Details
+                            if isServiceDetailsExpanded {
+                                VStack(spacing: 12) {
+                                    Divider()
+                                        .padding(.horizontal)
+                                    
+                                    ForEach(serviceDetails.items.indices, id: \.self) { index in
+                                        DetailRow(label: serviceDetails.items[index].label, value: serviceDetails.items[index].value)
+                                            .padding(.horizontal)
+                                    }
+                                }
+                                .padding(.bottom, 12)
+                                .transition(.opacity.combined(with: .move(edge: .top)))
+                            }
                         }
-                        .padding()
                         .background(Color.white)
                         .cornerRadius(12)
                         .shadow(color: .black.opacity(0.05), radius: 5)

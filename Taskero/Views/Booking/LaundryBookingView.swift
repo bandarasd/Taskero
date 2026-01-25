@@ -172,7 +172,7 @@ struct LaundryBookingView: View {
         let totalPrice = Int(weightPrice + ironingPrice + 5.0) // +5 Base fee
         
         return VStack {
-            NavigationLink(destination: BookingDetailsView(service: service, totalPrice: totalPrice)) {
+            NavigationLink(destination: BookingDetailsView(service: service, totalPrice: totalPrice, serviceDetails: ServiceDetails())) {
                 Text("Continue")
                     .font(.headline)
                     .fontWeight(.bold)

@@ -11,6 +11,7 @@ struct BookingDetailsView: View {
     @Environment(\.presentationMode) var presentationMode
     let service: ServiceItem
     let totalPrice: Int
+    let serviceDetails: ServiceDetails
     
     @State private var selectedDate = Date()
     @State private var currentMonth = Date()
@@ -163,7 +164,8 @@ struct BookingDetailsView: View {
                 service: service,
                 totalPrice: totalPrice,
                 selectedDate: selectedDate,
-                selectedTime: selectedTime
+                selectedTime: selectedTime,
+                serviceDetails: serviceDetails
             )) {
                 Text("Select Location")
                     .font(.headline)
@@ -246,5 +248,5 @@ struct DayCell: View {
         provider: "",
         imageColor: .blue,
         imageName: nil
-    ), totalPrice: 125)
+    ), totalPrice: 125, serviceDetails: ServiceDetails())
 }

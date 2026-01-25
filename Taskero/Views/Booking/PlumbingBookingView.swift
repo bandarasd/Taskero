@@ -21,6 +21,20 @@ struct PlumbingBookingView: View {
         return Int(basePrice + urgencyFee)
     }
     
+    // Service Details for Review Summary
+    var serviceDetails: ServiceDetails {
+        var items: [(label: String, value: String)] = []
+        
+        items.append(("Issue Type", issueType.rawValue))
+        items.append(("Urgent Request", isUrgent ? "Yes" : "No"))
+        
+        if !jobDetails.isEmpty {
+            items.append(("Job Details", jobDetails))
+        }
+        
+        return ServiceDetails(items: items)
+    }
+    
     var body: some View {
         VStack(spacing: 0) {
             // Header
@@ -120,7 +134,7 @@ struct PlumbingBookingView: View {
     
     private var bottomBar: some View {
         return VStack {
-            NavigationLink(destination: BookingDetailsView(service: service, totalPrice: price)) {
+            NavigationLink(destination: BookingDetailsView(service: service, totalPrice: price, serviceDetails: serviceDetails)) {
                 Text("Continue")
                     .font(.headline)
                     .fontWeight(.bold)

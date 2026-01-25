@@ -12,6 +12,8 @@ struct PaymentMethodsView: View {
     let totalPrice: Int
     let selectedDate: Date
     let selectedTime: String
+    let selectedLocation: String
+    let serviceDetails: ServiceDetails
     
     @Environment(\.presentationMode) var presentationMode
     @State private var selectedMethod: PaymentMethod = .paypal
@@ -95,7 +97,9 @@ struct PaymentMethodsView: View {
                     totalPrice: totalPrice,
                     selectedDate: selectedDate,
                     selectedTime: selectedTime,
-                    paymentMethod: selectedMethod.rawValue
+                    paymentMethod: selectedMethod.rawValue,
+                    selectedLocation: selectedLocation,
+                    serviceDetails: serviceDetails
                 )) {
                     Text("Continue")
                         .font(.headline)

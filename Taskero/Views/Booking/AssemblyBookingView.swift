@@ -124,7 +124,7 @@ struct AssemblyBookingView: View {
             
             // Bottom Action Bar
             VStack {
-                NavigationLink(destination: BookingDetailsView(service: service, totalPrice: price)) {
+                NavigationLink(destination: BookingDetailsView(service: service, totalPrice: price, serviceDetails: ServiceDetails())) {
                     Text("Continue")
                         .font(.headline)
                         .fontWeight(.bold)

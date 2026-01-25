@@ -76,6 +76,28 @@ struct CleaningBookingView: View {
         return Int(total)
     }
     
+    // Service Details for Review Summary
+    var serviceDetails: ServiceDetails {
+        var items: [(label: String, value: String)] = []
+        
+        items.append(("Area Size", "\(Int(areaSize)) sqm"))
+        items.append(("Cleaning Type", cleaningType.rawValue))
+        items.append(("Dirt Level", dirtLevel.rawValue))
+        items.append(("Bathrooms", "\(bathroomCount)"))
+        items.append(("Urgent Request", isUrgent ? "Yes" : "No"))
+        
+        if !selectedExtras.isEmpty {
+            let extrasString = selectedExtras.map { $0.rawValue }.joined(separator: ", ")
+            items.append(("Extras", extrasString))
+        }
+        
+        if !jobDetails.isEmpty {
+            items.append(("Job Details", jobDetails))
+        }
+        
+        return ServiceDetails(items: items)
+    }
+    
     var body: some View {
         VStack(spacing: 0) {
             // Header
@@ -247,7 +269,7 @@ struct CleaningBookingView: View {
             
             // Bottom Action Bar
             VStack {
-                NavigationLink(destination: BookingDetailsView(service: service, totalPrice: totalPrice)) {
+                NavigationLink(destination: BookingDetailsView(service: service, totalPrice: totalPrice, serviceDetails: serviceDetails)) {
                 Text("Continue")
                     .font(.headline)
                     .fontWeight(.bold)
