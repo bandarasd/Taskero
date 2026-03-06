@@ -8,11 +8,16 @@
 import SwiftUI
 
 struct ProfileView: View {
+    @EnvironmentObject var authService: AuthenticationService
+    @AppStorage("userFirstName") var firstName: String = ""
+    @AppStorage("userLastName") var lastName: String = ""
+    @AppStorage("userEmail") var userEmail: String = ""
+    @AppStorage("userRole") var userRole: String = "customer"
+    @AppStorage("isWorkerOnboardingCompleted") var isWorkerOnboardingCompleted: Bool = false
+    
     @State private var profile = UserProfile.mock
     @State private var showingEditProfile = false
     @State private var showingLogoutAlert = false
-    @AppStorage("userRole") var userRole: String = "customer"
-    @AppStorage("isWorkerOnboardingCompleted") var isWorkerOnboardingCompleted: Bool = false
     
     let mainColor = Color(red: 0/255, green: 191/255, blue: 99/255) // #00BF63
     
@@ -57,10 +62,10 @@ struct ProfileView: View {
                         }
                         
                         VStack(spacing: 4) {
-                            Text(profile.name)
+                            Text("\(firstName) \(lastName)")
                                 .font(.system(size: 24, weight: .bold))
                             
-                            Text(profile.email)
+                            Text(userEmail)
                                 .font(.system(size: 14))
                                 .foregroundColor(.secondary)
                         }
@@ -166,7 +171,7 @@ struct ProfileView: View {
                     title: Text("Logout"),
                     message: Text("Are you sure you want to logout?"),
                     primaryButton: .destructive(Text("Logout")) {
-                        // Handle logout
+                        authService.signOut()
                     },
                     secondaryButton: .cancel()
                 )
@@ -180,4 +185,5 @@ struct ProfileView: View {
 
 #Preview {
     ProfileView()
+        .environmentObject(AuthenticationService())
 }

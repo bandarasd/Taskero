@@ -4,5 +4,27 @@
 <dict>
 	<key>MBXAccessToken</key>
 	<string>pk.eyJ1IjoiZGFuYTIwMDIiLCJhIjoiY21rZmR4NTdjMGhmYjNlcHdpN3pwbXU5ZCJ9.CutsWj-OVUleSdNettsb-g</string>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSExceptionDomains</key>
+		<dict>
+			<key>localhost</key>
+			<dict>
+				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<true/>
+			</dict>
+		</dict>
+	</dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.985684479696-2ddephk24od56t31p6spbk7kh5o9rjqs</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>

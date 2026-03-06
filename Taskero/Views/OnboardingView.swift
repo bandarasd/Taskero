@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct OnboardingView: View {
+    @EnvironmentObject var authService: AuthenticationService
     @AppStorage("isOnboardingCompleted") var isOnboardingCompleted: Bool = false
     @State private var currentPage = 0
     @State private var showAuthView = false
@@ -94,6 +95,7 @@ struct OnboardingView: View {
                             if currentPage == pages.count - 1 {
                                 // Last Page: Full Width Button
                                 Button(action: {
+                                    isOnboardingCompleted = true
                                     showAuthView = true
                                 }) {
                                     Text("Let's Get Started")
@@ -110,6 +112,7 @@ struct OnboardingView: View {
                                 // Other Pages: Skip and Next Arrow
                                 HStack {
                                     Button("Skip") {
+                                        isOnboardingCompleted = true
                                         showAuthView = true
                                     }
                                     .foregroundColor(.gray)
@@ -143,6 +146,7 @@ struct OnboardingView: View {
         }
         .fullScreenCover(isPresented: $showAuthView) {
             AuthView()
+                .environmentObject(authService)
         }
     }
     

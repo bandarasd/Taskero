@@ -6,10 +6,11 @@
 import SwiftUI
 
 struct WorkerProfileView: View {
+    @EnvironmentObject var authService: AuthenticationService
     @AppStorage("userRole") var userRole: String = "worker"
     let worker = MockData.currentWorker
     let mainColor = Color.brandGreen
-    
+
     @State private var showingLogoutAlert = false
     
     var body: some View {
@@ -204,7 +205,7 @@ struct WorkerProfileView: View {
                     title: Text("Logout"),
                     message: Text("Are you sure you want to logout?"),
                     primaryButton: .destructive(Text("Logout")) {
-                        // Handle logout
+                        authService.signOut()
                     },
                     secondaryButton: .cancel()
                 )
@@ -271,4 +272,5 @@ struct QuickLinkCard: View {
 
 #Preview {
     WorkerProfileView()
+        .environmentObject(AuthenticationService())
 }
