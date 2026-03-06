@@ -15,6 +15,9 @@ enum ServiceType: String, CaseIterable, Codable {
     case repairing = "Repairing"
     case electrician = "Electrician"
     case assembly = "Assembly"
+    case carpenter = "Carpentry"
+    case moving = "Moving"
+    case gardening = "Gardening"
     case general = "General"
 }
 
@@ -27,5 +30,6 @@ struct ServiceItem: Identifiable {
     let provider: String
     let imageColor: Color
     let imageName: String?
+    var images: [String] = []
     var type: ServiceType = .general
 }

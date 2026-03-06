@@ -8,15 +8,12 @@
 import SwiftUI
 
 struct BookingsView: View {
-    @State private var selectedStatus: BookingStatus = .upcoming
+    @State private var selectedStatus: BookingStatus = .ongoing
     
-    // Mock Data
-    @State private var bookings: [Booking] = [
-        Booking(serviceName: "House Cleaning", category: "Cleaning", providerName: "Jenny Wilson", date: Date(), time: "10:00 AM", status: .upcoming, price: 87.50, imageName: nil, imageColor: .brandGreen),
-        Booking(serviceName: "AC Repair", category: "Repairing", providerName: "Guy Hawkins", date: Date().addingTimeInterval(-86400 * 2), time: "02:00 PM", status: .completed, price: 120.00, imageName: nil, imageColor: .orange),
-        Booking(serviceName: "Painting", category: "Painting", providerName: "Robert Fox", date: Date().addingTimeInterval(-86400 * 5), time: "09:00 AM", status: .canceled, price: 250.00, imageName: nil, imageColor: .blue),
-         Booking(serviceName: "Laundry", category: "Laundry", providerName: "Albert Flores", date: Date().addingTimeInterval(86400 * 3), time: "11:00 AM", status: .upcoming, price: 45.00, imageName: nil, imageColor: .purple)
-    ]
+    // Use centralized mock data
+    @State private var bookings: [Booking] = MockData.bookings
+    @State private var orderDetails: [OrderDetail] = MockData.orderDetails
+
     
     var filteredBookings: [Booking] {
         bookings.filter { $0.status == selectedStatus }
@@ -67,7 +64,14 @@ struct BookingsView: View {
                 ScrollView {
                     LazyVStack(spacing: 20) {
                         ForEach(filteredBookings) { booking in
-                            BookingCard(booking: booking)
+                            if let orderDetail = orderDetails.first(where: { $0.booking.serviceName == booking.serviceName }) {
+                                NavigationLink(destination: OrderDetailsView(orderDetail: orderDetail)) {
+                                    BookingCard(booking: booking, orderDetail: orderDetail)
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                            } else {
+                                BookingCard(booking: booking, orderDetail: nil)
+                            }
                         }
                     }
                     .padding()
@@ -81,27 +85,23 @@ struct BookingsView: View {
 
 struct BookingCard: View {
     let booking: Booking
+    let orderDetail: OrderDetail?
     
     var body: some View {
         VStack(spacing: 16) {
             // Header: Service Info & Status
             HStack(alignment: .top) {
                 // Image
-                ZStack {
-                    RoundedRectangle(cornerRadius: 16)
-                        .fill(booking.imageColor?.opacity(0.2) ?? Color.gray.opacity(0.2))
+                if let imageName = booking.imageName {
+                    Image(imageName)
+                        .resizable()
+                        .scaledToFit()
                         .frame(width: 80, height: 80)
-                    
-                    if let imageName = booking.imageName {
-                        Image(imageName)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 50, height: 50)
-                    } else {
-                         Image(systemName: "wrench.fill") // Placeholder
-                            .font(.title)
-                            .foregroundColor(booking.imageColor ?? .gray)
-                    }
+                } else {
+                    Image(systemName: "wrench.fill") // Placeholder
+                        .font(.largeTitle)
+                        .foregroundColor(booking.imageColor ?? .gray)
+                        .frame(width: 80, height: 80)
                 }
                 
                 VStack(alignment: .leading, spacing: 6) {
@@ -114,11 +114,25 @@ struct BookingCard: View {
                         .foregroundColor(.gray)
                     
                     // Provider
-                    HStack(spacing: 4) {
-                        Image(systemName: "person.circle.fill")
-                            .foregroundColor(.gray)
-                            .font(.caption)
-                        Text(booking.providerName) // Could be "Waiting for provider" if empty
+                    HStack(spacing: 8) {
+                        if let providerImage = booking.providerImage, UIImage(named: providerImage) != nil {
+                            Image(providerImage)
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 20, height: 20)
+                                .clipShape(Circle())
+                        } else {
+                            ZStack {
+                                Circle()
+                                    .fill(Color.gray.opacity(0.1))
+                                    .frame(width: 20, height: 20)
+                                Text(booking.providerName.prefix(1))
+                                    .font(.system(size: 10, weight: .bold))
+                                    .foregroundColor(.gray)
+                            }
+                        }
+                        
+                        Text(booking.providerName)
                             .font(.caption)
                             .foregroundColor(.gray)
                     }
@@ -157,17 +171,6 @@ struct BookingCard: View {
                     // E.g., View Receipt or Cancel
                      Text("$\(String(format: "%.2f", booking.price))")
                         .font(.headline)
-                        .fontWeight(.bold)
-                        .foregroundColor(.brandGreen)
-                } else if booking.status == .completed {
-                     Text("Re-Book")
-                        .font(.caption)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 8)
-                        .background(Color.brandGreen)
-                        .cornerRadius(16)
                 } else {
                      Text("$\(String(format: "%.2f", booking.price))")
                         .font(.headline)

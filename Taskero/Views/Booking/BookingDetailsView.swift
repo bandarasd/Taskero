@@ -99,7 +99,7 @@ struct BookingDetailsView: View {
                         LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 7), spacing: 15) {
                             ForEach(daysInMonth(), id: \.self) { date in
                                 if let date = date {
-                                    DayCell(date: date, isSelected: isSameDay(date, selectedDate))
+                                    BookingDayCell(date: date, isSelected: isSameDay(date, selectedDate))
                                         .onTapGesture {
                                             selectedDate = date
                                         }
@@ -224,7 +224,7 @@ struct BookingDetailsView: View {
     }
 }
 
-struct DayCell: View {
+struct BookingDayCell: View {
     let date: Date
     let isSelected: Bool
     

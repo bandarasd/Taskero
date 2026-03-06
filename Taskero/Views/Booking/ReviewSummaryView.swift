@@ -144,14 +144,27 @@ struct ReviewSummaryView: View {
                         
                         // Payment Method
                         HStack {
-                            Image(systemName: "creditcard.fill") // Use mapping based on paymentMethod string in real app
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 30, height: 30)
-                                .foregroundColor(paymentMethod == "MasterCard" ? .red : .orange)
+                            // Display custom payment icon
+                            if let iconName = getPaymentIcon(for: paymentMethod) {
+                                Image(iconName)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 50, height: 32)
+                            } else {
+                                Image(systemName: "creditcard.fill")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 30, height: 30)
+                                    .foregroundColor(.orange)
+                            }
                             
-                            Text(".... .... .... 4679") // Mock last 4 digits
-                                .fontWeight(.bold)
+                            if paymentMethod == "MasterCard" {
+                                Text(".... .... .... 4679")
+                                    .fontWeight(.bold)
+                            } else {
+                                Text(paymentMethod)
+                                    .fontWeight(.bold)
+                            }
                             
                             Spacer()
                             
@@ -219,8 +232,26 @@ struct ReviewSummaryView: View {
     
     private func formatDate(_ date: Date) -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "MMM d, yyyy"
+        formatter.dateFormat = "MMM dd, yyyy"
         return formatter.string(from: date)
+    }
+    
+    // Map payment method string to icon asset name
+    private func getPaymentIcon(for method: String) -> String? {
+        switch method {
+        case "PayPal":
+            return "paypal"
+        case "Google Pay":
+            return "google_pay"
+        case "Apple Pay":
+            return "apple_pay"
+        case "MasterCard":
+            return "mastercard"
+        case "Cash Money":
+            return "cash_icon"
+        default:
+            return nil
+        }
     }
 }
 

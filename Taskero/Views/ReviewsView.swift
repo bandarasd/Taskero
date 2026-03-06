@@ -14,25 +14,42 @@ struct ReviewsView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
-                ForEach(0..<10, id: \.self) { index in
+                ForEach(MockData.reviews) { review in
                     VStack(alignment: .leading, spacing: 10) {
                         HStack {
-                            Circle()
-                                .fill(Color.gray.opacity(0.3))
-                                .frame(width: 40, height: 40)
+                            if let imageName = review.reviewerImage, UIImage(named: imageName) != nil {
+                                Image(imageName)
+                                    .resizable()
+                                    .scaledToFill()
+                                    .frame(width: 40, height: 40)
+                                    .clipShape(Circle())
+                            } else {
+                                ZStack {
+                                    Circle()
+                                        .fill(Color.orange.opacity(0.1))
+                                        .frame(width: 40, height: 40)
+                                    
+                                    Text(review.reviewerName.prefix(1))
+                                        .font(.subheadline)
+                                        .fontWeight(.bold)
+                                        .foregroundColor(.orange)
+                                }
+                            }
+                            
                             VStack(alignment: .leading) {
-                                Text("Reviewer \(index + 1)")
+                                Text(review.reviewerName)
                                     .font(.subheadline)
                                     .fontWeight(.bold)
-                                Text("Awesome service! Highly recommended.")
+                                Text(review.comment)
                                     .font(.caption)
                                     .foregroundColor(.secondary)
+                                    .lineLimit(2)
                             }
                             Spacer()
                             HStack(spacing: 2) {
                                 Image(systemName: "star.fill")
                                     .font(.caption2)
-                                Text("5")
+                                Text("\(review.rating)")
                                     .font(.caption2)
                                     .fontWeight(.bold)
                             }
@@ -44,15 +61,30 @@ struct ReviewsView: View {
                             .foregroundColor(mainColor)
                         }
                         
+                        if let images = review.reviewImages, !images.isEmpty {
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                HStack(spacing: 8) {
+                                    ForEach(images, id: \.self) { img in
+                                        Image(img)
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 80, height: 80)
+                                            .cornerRadius(12)
+                                    }
+                                }
+                            }
+                            .padding(.vertical, 5)
+                        }
+                        
                         HStack(spacing: 15) {
                             HStack(spacing: 4) {
                                 Image(systemName: "heart")
-                                Text("\(100 + index)")
+                                Text("\(review.likes)")
                             }
                             .font(.caption)
                             .foregroundColor(.gray)
                             
-                            Text("\(index + 1) weeks ago")
+                            Text(review.timeAgo)
                                 .font(.caption)
                                 .foregroundColor(.gray)
                         }

@@ -40,10 +40,10 @@ struct PaymentMethodsView: View {
         // Helper for custom image assets if available
         var imageName: String? {
             switch self {
-            case .paypal: return "paypal_logo"
-            case .googlePay: return "google_pay_logo"
-            case .applePay: return "apple_pay_logo"
-            case .mastercard: return "mastercard_logo"
+            case .paypal: return "paypal"
+            case .googlePay: return "google_pay"
+            case .applePay: return "apple_pay"
+            case .mastercard: return "mastercard"
             case .cash: return "cash_icon"
             }
         }
@@ -128,25 +128,27 @@ struct PaymentMethodRow: View {
     var body: some View {
         Button(action: action) {
             HStack(spacing: 16) {
-                // Icon
-                if method == .mastercard {
-                    // Specific design for mastercard row
-                     Image(systemName: method.icon)
+                // Custom Icon from Assets
+                if let imageName = method.imageName {
+                    Image(imageName)
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 32, height: 32)
-                        .foregroundColor(.red) // distinct color
-                    
-                    Text(".... .... .... 4679")
-                        .font(.headline)
-                        .foregroundColor(.black)
+                        .frame(width: 50, height: 32)
                 } else {
+                    // Fallback to system icon
                     Image(systemName: method.icon)
                         .resizable()
                         .scaledToFit()
                         .frame(width: 24, height: 24)
                         .foregroundColor(.black)
-                    
+                }
+                
+                // Label
+                if method == .mastercard {
+                    Text(".... .... .... 4679")
+                        .font(.headline)
+                        .foregroundColor(.black)
+                } else {
                     Text(method.rawValue)
                         .font(.headline)
                         .foregroundColor(.black)
@@ -174,3 +176,4 @@ struct PaymentMethodRow: View {
         }
     }
 }
+

@@ -8,8 +8,19 @@
 import SwiftUI
 
 struct ContentView: View {
+    @AppStorage("userRole") var userRole: String = "customer"
+    @AppStorage("isWorkerOnboardingCompleted") var isWorkerOnboardingCompleted: Bool = false
+    
     var body: some View {
-        MainTabView()
+        if userRole == "worker" {
+            if isWorkerOnboardingCompleted {
+                WorkerMainTabView()
+            } else {
+                WorkerOnboardingView()
+            }
+        } else {
+            MainTabView()
+        }
     }
 }
 

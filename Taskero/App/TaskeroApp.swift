@@ -11,6 +11,7 @@ import SwiftUI
 struct TaskeroApp: App {
     @State private var isLoading = true
     @AppStorage("isOnboardingCompleted") var isOnboardingCompleted: Bool = false
+    @AppStorage("userRole") var userRole: String = "customer"
     
     var body: some Scene {
         WindowGroup {
